@@ -5,7 +5,7 @@ With this project, I have created an app that allows the user to input text on t
 This app is a cool way to help users explore how the command line/terminal work while being able to return specific data based on what someone inputs. It is a fun project to play around with and see what it is capable of.
 
 ## How to get started!
-To use this app, you need to have git bash. The logo should look something like this ![spotify example](images/Screenshot(5).png).
+To use this app, you need to have git bash. The logo should look something like this ![spotify example](/images/Screenshot(5).png).
 Once you have made your way to the terminal and clone the app to your computer, you can get started. There are 4 basic commands you can do. Movie-this, concert-this, Spotify-this-song and do-what-it-says. I will show you examples of how wach of these work.
 
 1) **spotify-this-song:** ![spotify example](https://raw.githubusercontent.com/images/Screenshot(2).png) If you look on the first line you can see an example of how to path into the app. This might change a little based on where you cloned the file to. On the second line is an example of how to get started with spotify. Always start with **node liri.js spotify-this-song song title**. Once you have that input, press enter and you should have an output look something like this
