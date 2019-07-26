@@ -9,18 +9,9 @@ var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
 var nodeArgs = process.argv;
 var command = process.argv[2];
-var event = '';
+var event = process.argv.splice(3).join(" ");
 
-for (var i = 3; i < nodeArgs.length; i++) {
 
-    if (i > 3 && i < nodeArgs.length) {
-        event = event + "+" + nodeArgs[i];
-    }
-    else {
-        event += nodeArgs[i];
-
-    }
-}
 
 switch (command) {
     case "movie-this":
@@ -38,6 +29,8 @@ switch (command) {
     case "do-what-it-says":
         voice(event);
         break;
+    default:
+        console.log('Input layout should look like this: Node liri.js concert-this Matchbox 20"')
 }
 
 
@@ -45,36 +38,40 @@ switch (command) {
 function movies(event) {
     var queryUrl = "http://www.omdbapi.com/?t=" + event + "&y=&plot=short&apikey=trilogy";
 
-    if(event === ''){
+    if (!event) {
         movies('Mr.Nobody');
     }
-    else{axios.get(queryUrl).then(
-        function (response) {
-            var data = response.data;
+    else {
+        axios.get(queryUrl).then(
+            function (response) {
+                var data = response.data;
 
-            console.log("The movie's title is: " + data.Title, "\nRelease Year: " + data.Year, "\nIMDB Rating: " + data.imdbRating, "\nMetacritic Rating: " + data.Metascore, "\nLocation Produced: " + data.Production, "\nLanguage: " + data.Language, "\nPlot: " + data.Plot, "\nActors: " + data.Actors);
-        }
-    );
+                console.log("The movie's title is: " + data.Title, "\nRelease Year: " + data.Year, "\nIMDB Rating: " + data.imdbRating, "\nMetacritic Rating: " + data.Metascore, "\nLocation Produced: " + data.Production, "\nLanguage: " + data.Language, "\nPlot: " + data.Plot, "\nActors: " + data.Actors);
+            }
+        );
     }
 }
 
 function concert(event) {
     var queryUrl = "https://rest.bandsintown.com/artists/" + event + "/events?app_id=codingbootcamp";
+    if (!event) {
+        concert('maroon 5');
+    } else {
+        axios.get(queryUrl).then(
+            function (response) {
 
-    axios.get(queryUrl).then(
-        function (response) {
-
-            var data = response.data;
-            for (var i = 0; i < data.length; i++) {
-                console.log("\nVenue Name: " + data[i].venue.name + "\nVenue Location: " + data[i].venue.city + "\nDate of Event: " + moment(data[i].datetime, 'YYYY-MM-DD HH:mm').format('MM/DD/YYY'));
+                var data = response.data;
+                for (var i = 0; i < data.length; i++) {
+                    console.log("\nVenue Name: " + data[i].venue.name + "\nVenue Location: " + data[i].venue.city + "\nDate of Event: " + moment(data[i].datetime, 'YYYY-MM-DD HH:mm').format('MM/DD/YYY'));
+                }
             }
-        }
-    )
+        )
+    }
 }
 
 function song(event) {
-    if (event === '') {
-        song('The Sign'); 
+    if (!event) {
+        song('The Sign Ace of Base');
     }
     else {
         spotify.search({ type: 'track', query: event }, function (err, data) {
@@ -83,7 +80,7 @@ function song(event) {
             } else {
                 var songInfo = data.tracks.items[0];
 
-                console.log("\nArtist: " + songInfo.artists[0].name + "\nSong: " + songInfo.name + "\nPreview: " + songInfo.album.name + "\nAlbum: " + songInfo.preview_url);
+                console.log("\nArtist: " + songInfo.artists[0].name + "\nSong: " + songInfo.name + "\nAlbum: " + songInfo.album.name + "\nPreview: " + songInfo.preview_url);
             };
         });
     }
